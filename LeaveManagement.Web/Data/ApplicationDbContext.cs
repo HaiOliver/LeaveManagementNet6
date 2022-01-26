@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using LeaveManagement.Web.Configurations.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagement.Web.Data
@@ -10,6 +11,19 @@ public class ApplicationDbContext : IdentityDbContext<Employee>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
+        }
+
+        // ! add role for user
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            // add role
+            builder.ApplyConfiguration(new RoleSeedConfiguration());
+            // add user
+            builder.ApplyConfiguration(new UserSeedConfiguration());
+            //// add user
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
         }
 
         // add Employees table  -> DB
